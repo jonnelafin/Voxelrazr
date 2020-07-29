@@ -26,8 +26,11 @@ package voxelrazr.render;
 
 import JFUtils.Input;
 import JFUtils.InputActivated;
+import JFUtils.Range;
+import JFUtils.point.Point3D;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashMap;
 import javax.swing.JPanel;
 import voxelrazr.core.Globals;
 
@@ -41,6 +44,8 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
 
     int w = Globals.window_default_w;
     int h = Globals.window_default_h;
+    int pixelsize = 16; 
+    
     
     Input inp;
     
@@ -83,8 +88,11 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         return "JFrame";
     }
 
-    int pos = Globals.window_default_w/2;
-    int nextpos = 0;
+    Point3D pos = new Point3D(Globals.window_default_w/2, w, w);
+    Point3D nextpos = new Point3D();
+    
+    HashMap<String, Float[]> image;
+    HashMap<String, Float[]> nextimage;
     
     private boolean vsync = true;
 
@@ -99,11 +107,29 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         g.fillRect(0, 0, w, h);
         
         g.setColor(Color.white);
-        g.fillRect(pos, 0, 30, 30);
+        g.fillRect((int) pos.x, 0, 30, 30);
+        
+        if(image != null){
+            for(int y : new Range(h/pixelsize)){
+                for(int x : new Range(w/pixelsize)){
+                    try {
+                        float val = image.get(y + "." + x)[0];
+//                    val = (float) (val % 1.0);
+                        val = (float) Math.min(1.0, val);
+                        val = (float) Math.max(0.0, val);
+                        g.setColor(new Color(val, val, val));
+                        g.fillRect(x * pixelsize, y * pixelsize, pixelsize, pixelsize);
+                    } catch (NullPointerException e) {
+                    }
+                }
+            }
+        }
         
         //Update parameters
         if(vsync){
             pos = nextpos;
+            image = nextimage;
+            render();
         }
     }
     
@@ -113,11 +139,23 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     }
 
     @Override
-    public void updateContent(int pos) {
+    public void updateContent(Point3D pos) {
         vsync = false;
         nextpos = pos;
         vsync = true;
         repaint();
+    }
+    
+    void render(){
+        nextimage = new HashMap<>();
+        for(int y : new Range(h/pixelsize)){
+            for(int x : new Range(w/pixelsize)){
+                //Ideally from 0 to 1
+                float value = 0F;
+                value = (float) (x - pos.x);
+                nextimage.put(y + "." + x, new Float[]{value, value, value});
+            }
+        }
     }
     
 }

@@ -23,6 +23,8 @@
  */
 package voxelrazr.core.Graphics;
 
+import JFUtils.point.Point3D;
+
 /**
  *
  * @author Arno Elias Eskelinen
@@ -52,5 +54,5 @@ public interface Renderer {
      */
     public void setupWindow(String windowName);
    
-    public void updateContent(int pos);
+    public void updateContent(Point3D pos);
 }

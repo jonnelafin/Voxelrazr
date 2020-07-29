@@ -24,6 +24,7 @@
 
 package voxelrazr.core;
 
+import JFUtils.point.Point3D;
 import static voxelrazr.core.Globals.l;
 import voxelrazr.core.logging.logStatus;
 
@@ -56,7 +57,7 @@ public class Logic {
         }
     }
     
-    double pos = Globals.window_default_w/2;
+    Point3D pos = new Point3D(0, 0, 0);
     
     public void tick(){
         //l.log("Tick!", logStatus.MISC  );
@@ -64,12 +65,12 @@ public class Logic {
         boolean d = Globals.input.query("d");
         if(a){
             //l.log("A", logStatus.MISC);
-            pos = pos - 0.00001;
+            pos.x = pos.x - 0.00001;
         }
         if(d){
             //l.log("D", logStatus.MISC);
-            pos = pos + 0.00001;
+            pos.x = pos.x + 0.00001;
         }
-        Globals.renderer.updateContent((int)pos);
+        Globals.renderer.updateContent(pos);
     }
 }
