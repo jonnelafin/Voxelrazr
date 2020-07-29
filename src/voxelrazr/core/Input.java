@@ -34,6 +34,7 @@ import voxelrazr.core.logging.logStatus;
  */
 public class Input implements JFUtils.InputListener{
 
+    
     /**
      * A map of all the keys
      */
@@ -54,6 +55,29 @@ public class Input implements JFUtils.InputListener{
     public void handleInput(char c, int i, boolean bln) {
         l.log("Input: " + c + ", " + i + "=" + bln,logStatus.INPUT);
         keys.put(c+"", bln);
+    }
+
+    public int mouseX = 0;
+    public int mouseY = 0;
+    
+    @Override
+    public void handleMouse(int x, int y) {
+        mouseX = x;
+        mouseY = y;
+    }
+
+    public boolean mousedown = false;
+    public int scrollstate = 0;
+    
+    @Override
+    public void handleMouseExtra(boolean bln, boolean bln1, boolean bln2, int i) {
+        mousedown = bln;
+        scrollstate = i;
+    }
+
+    @Override
+    public JFUtils.Input returnSource() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

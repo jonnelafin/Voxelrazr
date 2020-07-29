@@ -44,7 +44,7 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
 
     int w = Globals.window_default_w;
     int h = Globals.window_default_h;
-    int pixelsize = 16; 
+    int pixelsize = 12; 
     
     
     Input inp;
@@ -99,6 +99,7 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+        repaint();
         
         w = getWidth();
         h = getHeight();
@@ -106,18 +107,24 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         g.setColor(Color.black);
         g.fillRect(0, 0, w, h);
         
-        g.setColor(Color.white);
-        g.fillRect((int) pos.x, 0, 30, 30);
+        //g.setColor(Color.white);
+        //g.fillRect((int) pos.x, 0, 30, 30);
         
         if(image != null){
             for(int y : new Range(h/pixelsize)){
                 for(int x : new Range(w/pixelsize)){
                     try {
                         float val = image.get(y + "." + x)[0];
-//                    val = (float) (val % 1.0);
                         val = (float) Math.min(1.0, val);
                         val = (float) Math.max(0.0, val);
-                        g.setColor(new Color(val, val, val));
+                        float val2 = image.get(y + "." + x)[1];
+                        val2 = (float) Math.min(1.0, val2);
+                        val2 = (float) Math.max(0.0, val2);
+                        float val3 = image.get(y + "." + x)[2];
+                        val3 = (float) Math.min(1.0, val3);
+                        val3 = (float) Math.max(0.0, val3);
+                        
+                        g.setColor(new Color(val, val2, val3));
                         g.fillRect(x * pixelsize, y * pixelsize, pixelsize, pixelsize);
                     } catch (NullPointerException e) {
                     }
@@ -127,7 +134,7 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         
         //Update parameters
         if(vsync){
-            pos = nextpos;
+            pos = Point3D.divide(nextpos, new Point3D(pixelsize));
             image = nextimage;
             render();
         }
@@ -143,7 +150,6 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         vsync = false;
         nextpos = pos;
         vsync = true;
-        repaint();
     }
     
     void render(){
@@ -152,8 +158,12 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
             for(int x : new Range(w/pixelsize)){
                 //Ideally from 0 to 1
                 float value = 0F;
-                value = (float) (x - pos.x);
-                nextimage.put(y + "." + x, new Float[]{value, value, value});
+                float value2 = 0F;
+                value = (float) (x - pos.x)/20;
+                value2 = (float) (y - pos.y)/20;
+                
+                float value3 = value * value2;
+                nextimage.put(y + "." + x, new Float[]{value, value2, value3});
             }
         }
     }

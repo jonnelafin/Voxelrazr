@@ -71,6 +71,7 @@ public class Logic {
             //l.log("D", logStatus.MISC);
             pos.x = pos.x + 0.00001;
         }
+        pos = new Point3D(Globals.input.mouseX, Globals.input.mouseY, 0);
         Globals.renderer.updateContent(pos);
     }
 }
