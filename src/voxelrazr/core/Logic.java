@@ -55,15 +55,21 @@ public class Logic {
             tick();
         }
     }
+    
+    double pos = Globals.window_default_w/2;
+    
     public void tick(){
         //l.log("Tick!", logStatus.MISC  );
         boolean a = Globals.input.query("a");
         boolean d = Globals.input.query("d");
         if(a){
-            l.log("A", logStatus.MISC);
+            //l.log("A", logStatus.MISC);
+            pos = pos - 0.00001;
         }
         if(d){
-            l.log("D", logStatus.MISC);
+            //l.log("D", logStatus.MISC);
+            pos = pos + 0.00001;
         }
+        Globals.renderer.updateContent((int)pos);
     }
 }

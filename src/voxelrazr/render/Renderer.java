@@ -87,9 +87,10 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     int nextpos = 0;
     
     private boolean vsync = true;
+
     @Override
-    public void paint(Graphics g) {
-        super.paint(g); //To change body of generated methods, choose Tools | Templates.
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         
         w = getWidth();
         h = getHeight();
@@ -105,12 +106,18 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
             pos = nextpos;
         }
     }
+    
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g); //To change body of generated methods, choose Tools | Templates.
+    }
 
     @Override
     public void updateContent(int pos) {
         vsync = false;
-        pos = pos;
+        nextpos = pos;
         vsync = true;
+        repaint();
     }
     
 }

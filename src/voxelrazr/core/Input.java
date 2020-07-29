@@ -52,7 +52,7 @@ public class Input implements JFUtils.InputListener{
 
     @Override
     public void handleInput(char c, int i, boolean bln) {
-        l.log("Input: " + c + ", " + i + "=" + bln,logStatus.MISC);
+        l.log("Input: " + c + ", " + i + "=" + bln,logStatus.INPUT);
         keys.put(c+"", bln);
     }
     
