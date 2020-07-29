@@ -180,7 +180,7 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     }
     
     int ray_maxSteps = 200;
-    float ray_minDist = 0.1F;
+    float ray_minDist = .5F;
     Point3D ray_target = new Point3D(Globals.window_default_w, Globals.window_default_h, 10);
     float castray(Point3D from, Point3D dir){
         Point3D dir2 = new Point3D();
@@ -199,11 +199,11 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         Point3D pos = Point3D.add(from, new Point3D());
         for(int i : new Range(ray_maxSteps)){
             double min = 0;
-            Point3D offset = Point3D.add(pos, new Point3D(-5));
+            Point3D offset = Point3D.add(pos, new Point3D(-this.pos.x, -this.pos.y, 0));
             //min = box(offset, new Point3D(1));
             min = Distance.sphere(offset, 5F);
             if(abs(min) < ray_minDist){
-                result = 1;
+                result = i/5.0F;
                 //System.out.println(i);
                 break;
             }
