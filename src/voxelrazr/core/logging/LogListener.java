@@ -21,40 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package voxelrazr.render;
-
-import JFUtils.Input;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import voxelrazr.core.Globals;
+package voxelrazr.core.logging;
 
 /**
  *
- * @author Jonnelafin
+ * @author Arno Elias Eskelinen
  */
-public class Window extends JFrame{
-    private Renderer renderer;
-    private Input inp;
-    public Window(boolean exitOnClose, Renderer r, String title){
-        System.out.println("Creating window: " + this);
-        renderer = r;
-        
-        //Set basic operating parameters
-        setTitle(title);
-        setSize(Globals.window_default_w, Globals.window_default_w);
-        setLayout(new BorderLayout());
-        
-        //Add the renderer
-        add(renderer, BorderLayout.CENTER);
-        
-        //Set function to handle exit
-        if(exitOnClose){
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-        }
-        else{
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        }
-        setVisible(true);
-    }
+public interface LogListener {
+    public void receive(String logline, logStatus stat);
 }

@@ -24,6 +24,8 @@
 
 package voxelrazr.core;
 
+import java.util.LinkedList;
+import voxelrazr.core.logging.LogListener;
 import voxelrazr.core.logging.logStatus;
 
 /**
@@ -32,9 +34,34 @@ import voxelrazr.core.logging.logStatus;
  */
 public class Logger implements voxelrazr.core.logging.Logger{
 
+    private LinkedList<LogListener> listeners = new LinkedList<>();
+    
+    private synchronized void aListener(LogListener l){
+        listeners.add(l);
+    }
+    private synchronized void rListener(LogListener l){
+        if(listeners.contains(l)){
+            listeners.remove(l);
+        }
+    }
+    
     @Override
     public void log(String info, logStatus status) {
         System.out.println(status + " | " + info);
+            listeners.forEach(l -> {
+                l.receive(info,status);
+            }
+        );
+    }
+
+    @Override
+    public void addListener(LogListener l) {
+        aListener(l);
+    }
+
+    @Override
+    public void removeListener(LogListener l) {
+        rListener(l);
     }
 
 }

@@ -33,5 +33,6 @@ public enum logStatus {
     WARNING,
     FAIL,
     CHAT,
-    REQUEST
+    REQUEST,
+    Input
 }

@@ -50,7 +50,7 @@ public interface Renderer {
     /**
      * Call to tell the implementing class to setup it's window.
      */
-    public void setupWindow();
+    public void setupWindow(String windowName);
    
-    
+    public void updateContent(int pos);
 }

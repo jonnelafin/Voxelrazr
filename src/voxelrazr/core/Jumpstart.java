@@ -33,7 +33,7 @@ public class Jumpstart {
         System.out.println("Creating renderer...");
         Globals.renderer = new Renderer();
         System.out.println("Calling renderer to create window...");
-        Globals.renderer.setupWindow();
+        Globals.renderer.setupWindow("Voxelrazr " + Globals.version);
         System.out.println("Creating logic...");
         Globals.Logic = new Logic();
     }

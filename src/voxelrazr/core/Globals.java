@@ -36,7 +36,7 @@ public class Globals {
     public static final String version_friendly = "dev 0.0";
     
     //JFUtils
-    public static final double JFUtils_min_ver = 3.46;
+    public static final double JFUtils_min_ver = 3.5;
     
     //Window, Logic, Renderer
     public static voxelrazr.core.Graphics.Renderer renderer;
@@ -49,7 +49,10 @@ public class Globals {
     public static int window_default_w = 500;
     public static int window_default_h = 500;
     
+    //Input
+    public static Input input = new Input();
+    
     //Custom
-    HashMap<String, Object> custom;
-    HashMap<String, Object> custom_graphics;
+    public static HashMap<String, Object> custom;
+    public static HashMap<String, Object> custom_graphics;
 }

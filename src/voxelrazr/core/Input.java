@@ -25,12 +25,14 @@
 package voxelrazr.core;
 
 import java.util.concurrent.ConcurrentHashMap;
+import static voxelrazr.core.Globals.l;
+import voxelrazr.core.logging.logStatus;
 
 /**
  *
  * @author Jonnelafin
  */
-public class Input {
+public class Input implements JFUtils.InputListener{
 
     /**
      * A map of all the keys
@@ -38,7 +40,7 @@ public class Input {
     public ConcurrentHashMap<String, Boolean> keys = new ConcurrentHashMap<>();
     
     public boolean query(String query){
-        if(keys.contains(query)){
+        if(keys.keySet().contains(query)){
             return keys.get(query);
         }
         return false;
@@ -46,6 +48,12 @@ public class Input {
     
     public Input() {
     
+    }
+
+    @Override
+    public void handleInput(char c, int i, boolean bln) {
+        l.log("Input: " + c + ", " + i + "=" + bln,logStatus.MISC);
+        keys.put(c+"", bln);
     }
     
 }

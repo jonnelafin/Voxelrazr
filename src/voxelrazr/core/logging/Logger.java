@@ -28,5 +28,10 @@ package voxelrazr.core.logging;
  * @author Arno Elias Eskelinen
  */
 public interface Logger {
+    
+    public void addListener(LogListener l);
+    
+    public void removeListener(LogListener l);
+    
     public void log(String info, logStatus status);
 }

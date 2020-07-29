@@ -56,7 +56,14 @@ public class Logic {
         }
     }
     public void tick(){
-        l.log("Tick!", logStatus.MISC);
-        
+        //l.log("Tick!", logStatus.MISC  );
+        boolean a = Globals.input.query("a");
+        boolean d = Globals.input.query("d");
+        if(a){
+            l.log("A", logStatus.MISC);
+        }
+        if(d){
+            l.log("D", logStatus.MISC);
+        }
     }
 }

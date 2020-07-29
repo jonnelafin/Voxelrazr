@@ -24,6 +24,8 @@
 
 package voxelrazr.render;
 
+import JFUtils.Input;
+import JFUtils.InputActivated;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -40,6 +42,8 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     int w = Globals.window_default_w;
     int h = Globals.window_default_h;
     
+    Input inp;
+    
     public Renderer() {
         //Set the jpanel to be double buffered
         setDoubleBuffered(true);
@@ -47,9 +51,21 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
     
     
     @Override
-    public void setupWindow() {
-        System.out.println(this + " setting up window...");
-        window = new Window(true, this);
+    public void setupWindow(String windowName) {
+
+        System.out.println(this.hashCode() + " setting up window...");
+        window = new Window(true, this, windowName);      
+        
+        System.out.println("Setting up window input...");
+        inp = new Input(new InputActivated());
+        inp.addListener(Globals.input);
+        //inp.verbodose = true;
+        addMouseListener(inp);
+        addMouseWheelListener(inp);
+        addMouseMotionListener(inp);
+        
+        addKeyListener(inp);
+        requestFocusInWindow();
     }
 
     @Override
@@ -67,6 +83,10 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         return "JFrame";
     }
 
+    int pos = Globals.window_default_w/2;
+    int nextpos = 0;
+    
+    private boolean vsync = true;
     @Override
     public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
@@ -76,6 +96,21 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         
         g.setColor(Color.black);
         g.fillRect(0, 0, w, h);
+        
+        g.setColor(Color.white);
+        g.fillRect(pos, 0, 30, 30);
+        
+        //Update parameters
+        if(vsync){
+            pos = nextpos;
+        }
+    }
+
+    @Override
+    public void updateContent(int pos) {
+        vsync = false;
+        pos = pos;
+        vsync = true;
     }
     
 }
