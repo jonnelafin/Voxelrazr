@@ -30,9 +30,13 @@ import JFUtils.Range;
 import JFUtils.point.Point3D;
 import java.awt.Color;
 import java.awt.Graphics;
+import static java.lang.Math.abs;
 import java.util.HashMap;
 import javax.swing.JPanel;
 import voxelrazr.core.Globals;
+import static voxelrazr.core.Globals.l;
+import voxelrazr.core.logging.logStatus;
+import static voxelrazr.render.Distance.box;
 
 /**
  *
@@ -152,6 +156,7 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
         vsync = true;
     }
     
+    boolean rendered = false;
     void render(){
         nextimage = new HashMap<>();
         for(int y : new Range(h/pixelsize)){
@@ -164,8 +169,47 @@ public class Renderer extends JPanel implements voxelrazr.core.Graphics.Renderer
                 
                 float value3 = value * value2;
                 nextimage.put(y + "." + x, new Float[]{value, value2, value3});
+                
+                if(!rendered){
+                    rendered = false;
+                    float valuez = castray(new Point3D(x, y, 0), new Point3D(0, 0, 1));
+                    nextimage.put(y + "." + x, new Float[]{valuez, valuez, valuez});
+                }
             }
         }
+    }
+    
+    int ray_maxSteps = 200;
+    float ray_minDist = 0.1F;
+    Point3D ray_target = new Point3D(Globals.window_default_w, Globals.window_default_h, 10);
+    float castray(Point3D from, Point3D dir){
+        Point3D dir2 = new Point3D();
+        if(!(dir.x < 1)){
+            dir2.x = 1;
+        }
+        if(!(dir.y < 1)){
+            dir2.y = 1;
+        }
+        if(!(dir.z < 1)){
+            dir2.z = 1;
+        }
+        //l.log("Normalized toward dir: " + dir2, logStatus.INFO);
+        
+        float result = 0;
+        Point3D pos = Point3D.add(from, new Point3D());
+        for(int i : new Range(ray_maxSteps)){
+            double min = 0;
+            Point3D offset = Point3D.add(pos, new Point3D(-5));
+            //min = box(offset, new Point3D(1));
+            min = Distance.sphere(offset, 5F);
+            if(abs(min) < ray_minDist){
+                result = 1;
+                //System.out.println(i);
+                break;
+            }
+            pos = Point3D.add(pos, dir2);
+        }
+        return result;
     }
     
 }
